@@ -1,18 +1,22 @@
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { TextField, Button, Container, Typography, Paper } from '@mui/material';
 import { useAuthStore } from '../store/authStore';
+import { LoginCredentials } from '../types/auth';
 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
-  const { control, handleSubmit } = useForm<{ email: string; password: string }>();
+  const location = useLocation();
+  const { control, handleSubmit } = useForm<LoginCredentials>();
   const login = useAuthStore(state => state.login);
 
-  const onSubmit = async (data: { email: string; password: string }) => {
+  const onSubmit = async (data: LoginCredentials) => {
     try {
       await login(data);
-      navigate('/');
+      // 로그인 성공 후 이전 페이지로 리다이렉트 (없으면 홈으로)
+      const from = (location.state as any)?.from?.pathname || '/';
+      navigate(from, { replace: true });
     } catch (error) {
       console.error('Login failed:', error);
     }
@@ -29,11 +33,11 @@ const LoginForm: React.FC = () => {
             name="email"
             control={control}
             defaultValue=""
-            rules={{ required: 'Email is required' }}
+            rules={{ required: 'Username is required' }}
             render={({ field, fieldState: { error } }) => (
               <TextField
                 {...field}
-                label="Email"
+                label="Username"
                 fullWidth
                 margin="normal"
                 error={!!error}

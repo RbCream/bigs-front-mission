@@ -10,26 +10,14 @@ import ProtectedRoute from './components/ProtectedRoute';
 const AppRoutes: React.FC = () => {
   return (
     <Routes>
-      <Route path="/" element={<PostList />} />
-      <Route path="/posts/:id" element={<PostDetail />} />
       <Route path="/login" element={<LoginForm />} />
       <Route path="/signup" element={<SignupForm />} />
-      <Route 
-        path="/posts/new" 
-        element={
-          <ProtectedRoute>
-            <PostForm />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/posts/edit/:id" 
-        element={
-          <ProtectedRoute>
-            <PostForm />
-          </ProtectedRoute>
-        } 
-      />
+      <Route element={<ProtectedRoute />}>
+        <Route path="/" element={<PostList />} />
+        <Route path="/posts/:id" element={<PostDetail />} />
+        <Route path="/posts/new" element={<PostForm />} />
+        <Route path="/posts/edit/:id" element={<PostForm />} />
+      </Route>
     </Routes>
   );
 };
