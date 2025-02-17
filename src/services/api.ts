@@ -10,12 +10,13 @@ const api = axios.create({
 });
 
 // 요청 인터셉터를 추가합니다.
-api.interceptors.request.use( (config) => {
-    const accessToken = useAuthStore.getState().accessToken;
-    if (accessToken) {
-        config.headers['Authorization'] = `Bearer ${accessToken}`;
-    }
-    return config;
+api.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('accessToken');
+        if (token && config.url !== '/auth/refresh') {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
     },
     (error) => {
         return Promise.reject(error);
@@ -31,9 +32,11 @@ api.interceptors.response.use(
             originalRequest._retry = true;
             try {
                 await useAuthStore.getState().refreshAccessToken();
+                const newToken = localStorage.getItem('accessToken');
+                originalRequest.headers.Authorization = `Bearer ${newToken}`;
                 return api(originalRequest);
-            } catch (refreshError) {
-                console.error('Error refreshing token:', refreshError);
+            } catch (refreshError: any) {
+                console.error('Error refreshing token:', refreshError.response ? refreshError.response.data : refreshError.message);
                 useAuthStore.getState().logout();
                 // 로그인 페이지로 리다이렉트 또는 인증 실패 처리
             }

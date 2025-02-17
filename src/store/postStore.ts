@@ -9,13 +9,15 @@ export const usePostStore = create<PostState>((set) => ({
     error: null,
 
     // 게시글 목록 조회
-    fetchPosts: async () => {
+    fetchPosts: async (page: number, size: number): Promise<number> => {
         set({ loading: true });
         try {
-            const posts = await postService.getPosts();
-            set({ posts, loading: false, error: null });
+            const { content, totalPages } = await postService.getPosts(page, size);
+            set({ posts: Array.isArray(content) ? content : [], loading: false, error: null });
+            return totalPages;
         } catch (error) {
             set({ error: 'Failed to fetch posts', loading: false });
+            return 0;
         }
     },
 
@@ -31,10 +33,10 @@ export const usePostStore = create<PostState>((set) => ({
     },
 
     // 게시글 생성
-    createPost: async (title: string, content: string) => {
+    createPost: async (title: string, content: string, category: string) => {
         set({ loading: true });
         try {
-            const newPost = await postService.createPost({ title, content });
+            const newPost = await postService.createPost({ title, content, category });
             set((state) => ({ 
                 posts: [...state.posts, newPost],
                 loading: false,
@@ -46,10 +48,10 @@ export const usePostStore = create<PostState>((set) => ({
     },
 
     // 게시글 수정
-    updatePost: async (id: number, title: string, content: string) => {
+    updatePost: async (id: number, title: string, content: string, category: string) => {
         set({ loading: true });
         try {
-            const updatedPost = await postService.updatePost(id, { title, content });
+            const updatedPost = await postService.updatePost(id, { title, content, category });
             set((state) => ({
                 posts: state.posts.map(post => post.id === id ? updatedPost : post),
                 currentPost: updatedPost,

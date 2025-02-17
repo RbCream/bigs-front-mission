@@ -3,19 +3,19 @@ import { useForm, Controller } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Container, Typography, Paper } from '@mui/material';
 import { useAuthStore } from '../store/authStore';
+import { SignupCredentials } from '../types/auth';
 
 const SignupForm: React.FC = () => {
   const navigate = useNavigate();
-  const { control, handleSubmit } = useForm<{ username: string; email: string; password: string }>();
+  const { control, handleSubmit } = useForm<SignupCredentials>();
   const signup = useAuthStore(state => state.signup);
 
-
-  const onSubmit = async (data: { username: string; email: string; password: string }) => {
+  const onSubmit = async (data: SignupCredentials) => {
     try {
       await signup(data);
       navigate('/');
-    } catch (error) {
-      console.error('Signup failed:', error);
+    } catch (error: any) {
+      console.error('Signup failed:', error.response ? error.response.data : error.message);
     }
   };
 
@@ -68,6 +68,39 @@ const SignupForm: React.FC = () => {
                 {...field}
                 type="password"
                 label="Password"
+                fullWidth
+                margin="normal"
+                error={!!error}
+                helperText={error?.message}
+              />
+            )}
+          />
+          <Controller
+            name="name"
+            control={control}
+            defaultValue=""
+            rules={{ required: 'Name is required' }}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                label="Name"
+                fullWidth
+                margin="normal"
+                error={!!error}
+                helperText={error?.message}
+              />
+            )}
+          />
+          <Controller
+            name="confirmPassword"
+            control={control}
+            defaultValue=""
+            rules={{ required: 'Confirm Password is required' }}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                type="password"
+                label="Confirm Password"
                 fullWidth
                 margin="normal"
                 error={!!error}

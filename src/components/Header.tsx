@@ -15,7 +15,7 @@ const Header: React.FC = () => {
         {isAuthenticated ? (
           <>
             <Typography variant="subtitle1" style={{ marginRight: '1rem' }}>
-              Welcome, {user?.username}
+              {user?.email}님 환영합니다
             </Typography>
             <Button color="inherit" onClick={logout}>Logout</Button>
           </>

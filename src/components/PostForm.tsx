@@ -1,12 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { usePostStore } from '../store/postStore';
+import { getCategories } from '../services/postService';
 import { TextField, Button, Container, Typography, Paper } from '@mui/material';
 
 interface PostFormData {
   title: string;
   content: string;
+  category: string;
 }
 
 const PostForm: React.FC = () => {
@@ -14,6 +16,15 @@ const PostForm: React.FC = () => {
   const navigate = useNavigate();
   const { control, handleSubmit, setValue } = useForm<PostFormData>();
   const { createPost, updatePost, currentPost, fetchPost } = usePostStore();
+  const [categories, setCategories] = useState<{ [key: string]: string }>({});
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const categories = await getCategories();
+      setCategories(categories);
+    };
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     if (id) {
@@ -25,14 +36,15 @@ const PostForm: React.FC = () => {
     if (id && currentPost) {
       setValue('title', currentPost.title);
       setValue('content', currentPost.content);
+      setValue('category', currentPost.category);
     }
   }, [id, currentPost, setValue]);
 
   const onSubmit = async (data: PostFormData) => {
     if (id) {
-      await updatePost(parseInt(id), data.title, data.content);
+      await updatePost(parseInt(id), data.title, data.content, data.category);
     } else {
-      await createPost(data.title, data.content);
+      await createPost(data.title, data.content, data.category);
     }
     navigate('/');
   };
@@ -76,6 +88,32 @@ const PostForm: React.FC = () => {
                 error={!!error}
                 helperText={error?.message}
               />
+            )}
+          />
+          <Controller
+            name="category"
+            control={control}
+            defaultValue=""
+            rules={{ required: 'Category is required' }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                select
+                label="Category"
+                fullWidth
+                margin="normal"
+                SelectProps={{
+                  native: true,
+                }}
+              >
+                <option value="" disabled hidden>
+                </option>
+                {Object.entries(categories).map(([key, value]) => (
+                  <option key={key} value={key}>
+                    {value}
+                  </option>
+                ))}
+              </TextField>
             )}
           />
           <Button type="submit" variant="contained" color="primary" style={{ marginTop: '20px' }}>

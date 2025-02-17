@@ -1,73 +1,96 @@
-import { create } from 'zustand'
-import { AuthState, LoginCredentials, SignupCredentials } from '../types/auth'
-import { login, signup, refreshToken, logout } from '../services/auth'
-import api from '../services/api'
+import { create } from 'zustand';
+import { AuthState, LoginCredentials, SignupCredentials, User } from '../types/auth';
+import { login, signup, refreshToken } from '../services/auth';
+
+const getUserFromLocalStorage = (): User | null => {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+};
 
 export const useAuthStore = create<AuthState>((set, get) => ({
-    user: null,
+    user: getUserFromLocalStorage(),
     isAuthenticated: !!localStorage.getItem('accessToken'),
     accessToken: localStorage.getItem('accessToken'),
     refreshToken: localStorage.getItem('refreshToken'),
+    isRefreshing: false, // 추가된 플래그
 
-    // 로그인 관련 스토어
+// 로그인 관련 스토어
     login: async (credentials: LoginCredentials) => {
         try {
-            const response = await api.post('/auth/login', credentials);
-            localStorage.setItem('accessToken', response.data.accessToken);
-            localStorage.setItem('refreshToken', response.data.refreshToken);
-            set({ 
-                isAuthenticated: true, 
-                accessToken: response.data.accessToken, 
-                refreshToken: response.data.refreshToken 
-            });
-        } catch (error) {
-            console.error('Login failed:', error)
-        }
-    },
-
-    // 회원가입 관련 스토어
-    signup: async (credentials: SignupCredentials) => {
-        try {
-            const response = await signup(credentials)
+            const response = await login(credentials);
             localStorage.setItem('accessToken', response.accessToken);
             localStorage.setItem('refreshToken', response.refreshToken);
+            const user = { id: 1, username: credentials.username, email: credentials.username };
+            localStorage.setItem('user', JSON.stringify(user));
             set({ 
                 isAuthenticated: true, 
                 accessToken: response.accessToken, 
-                refreshToken: response.refreshToken 
-            })
+                refreshToken: response.refreshToken,
+                user
+            });
         } catch (error) {
-            console.error('Signup failed:', error)
+            console.error('Login failed:', error);
+            throw error; // 에러를 다시 던져서 호출한 곳에서 처리할 수 있도록 합니다.
         }
     },
 
-    // 로그아웃 관련 스토어
-    logout: async () => {
+// 회원가입 관련 스토어
+    signup: async (credentials: SignupCredentials) => {
         try {
-            await logout()
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-            set({ user: null, isAuthenticated: false, accessToken: null, refreshToken: null })
-        } catch (error) {
-            console.error('Logout failed:', error)
+            const response = await signup(credentials);
+            localStorage.setItem('accessToken', response.accessToken);
+            localStorage.setItem('refreshToken', response.refreshToken);
+            const user = { id: 1, username: credentials.username, email: credentials.email };
+            localStorage.setItem('user', JSON.stringify(user));
+            set({ 
+                isAuthenticated: true, 
+                accessToken: response.accessToken, 
+                refreshToken: response.refreshToken,
+                user
+            });
+        } catch (error: any) {
+            console.error('Signup failed:', error.response ? error.response.data : error.message);
+            throw error;
         }
     },
 
-    // 액세스 토큰 갱신 관련 스토어
+// 로그아웃 관련 스토어
+    logout: async() => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('user');
+        set({ user: null, isAuthenticated: false, accessToken: null, refreshToken: null, isRefreshing: false });
+    },
+
+// 액세스 토큰 갱신 관련 스토어
     refreshAccessToken: async () => {
         const currentRefreshToken = get().refreshToken;
-        if (currentRefreshToken) {
+        if (currentRefreshToken && !get().isRefreshing) {
+            set({ isRefreshing: true });
             try {
-                const response = await refreshToken(currentRefreshToken)
+                console.log('Refreshing access token...');
+                const response = await refreshToken(currentRefreshToken);
                 localStorage.setItem('accessToken', response.accessToken);
                 localStorage.setItem('refreshToken', response.refreshToken);
+                const user = get().user;
                 set({ 
                     accessToken: response.accessToken, 
-                    refreshToken: response.refreshToken 
-                })
+                    refreshToken: response.refreshToken,
+                    user,
+                    isRefreshing: false
+                });
+                console.log('Access token refreshed successfully');
             } catch (error) {
-                console.error('Token refresh failed:', error)
+                const err = error as any;
+                console.error('Token refresh failed:', err.response ? err.response.data : err.message);
+// 리프레시 토큰 갱신 실패 시 로그아웃 처리
+                set({ user: null, isAuthenticated: false, accessToken: null, refreshToken: null, isRefreshing: false });
+                localStorage.removeItem('accessToken');
+                localStorage.removeItem('refreshToken');
+                localStorage.removeItem('user');
             }
+        } else {
+            console.log('No refresh token available or already refreshing');
         }
     },
 }));

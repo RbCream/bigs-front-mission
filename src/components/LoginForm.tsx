@@ -19,6 +19,11 @@ const LoginForm: React.FC = () => {
       navigate(from, { replace: true });
     } catch (error) {
       console.error('Login failed:', error);
+      if (error instanceof Error) {
+        alert('Login failed: ' + error.message); // 사용자에게 에러 메시지를 표시합니다.
+      } else {
+        alert('Login failed');
+      }
     }
   };
 
@@ -30,7 +35,7 @@ const LoginForm: React.FC = () => {
         </Typography>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Controller
-            name="email"
+            name="username"
             control={control}
             defaultValue=""
             rules={{ required: 'Username is required' }}
