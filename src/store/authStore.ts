@@ -14,6 +14,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     refreshToken: localStorage.getItem('refreshToken'),
     isRefreshing: false,
 
+    // 로그인
     login: async (credentials: LoginCredentials) => {
         try {
             const response = await login(credentials);
@@ -33,6 +34,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         }
     },
 
+    // 회원가입
     signup: async (credentials: SignupCredentials) => {
         try {
             const response = await signup(credentials);
@@ -52,6 +54,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         }
     },
 
+    // 로그아웃
     logout: async () => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
@@ -59,6 +62,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         set({ user: null, isAuthenticated: false, accessToken: null, refreshToken: null, isRefreshing: false });
     },
 
+    // 액세스 토큰 갱신
     refreshAccessToken: async () => {
         const currentRefreshToken = get().refreshToken;
         if (currentRefreshToken && !get().isRefreshing) {
@@ -89,6 +93,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         }
     },
 
+    // 토큰 설정
     setTokens: (accessToken: string, refreshToken: string) => {
         set({
             accessToken,

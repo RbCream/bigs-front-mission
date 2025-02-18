@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
 
-// axios 인스턴스를 생성합니다.
+// axios
 const api = axios.create({
     baseURL: 'https://front-mission.bigs.or.kr',
     headers: {
@@ -9,7 +9,7 @@ const api = axios.create({
     },
 });
 
-// 요청 인터셉터를 추가합니다.
+// 요청 인터셉터
 api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('accessToken');
@@ -23,7 +23,7 @@ api.interceptors.request.use(
     }
 );
 
-// 응답 인터셉터를 추가합니다.
+// 응답 인터셉터
 api.interceptors.response.use(
     (response) => response,
     async (error) => {
@@ -38,8 +38,7 @@ api.interceptors.response.use(
             } catch (refreshError: any) {
                 console.error('Error refreshing token:', refreshError.response ? refreshError.response.data : refreshError.message);
                 useAuthStore.getState().logout();
-                // 로그인 페이지로 리다이렉트 또는 인증 실패 처리
-            }
+                            }
         }
         return Promise.reject(error);
     }

@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { usePostStore } from '../store/postStore';
 import { getCategories } from '../services/postService';
 import { TextField, Button, Container, Typography, Paper } from '@mui/material';
+import { Post } from '../types/post';
 
 interface PostFormData {
   title: string;
@@ -34,9 +35,10 @@ const PostForm: React.FC = () => {
 
   useEffect(() => {
     if (id && currentPost) {
-      setValue('title', currentPost.title);
-      setValue('content', currentPost.content);
-      setValue('category', currentPost.category);
+      const post = currentPost as Post;
+      setValue('title', post.title);
+      setValue('content', post.content);
+      setValue('category', post.category);
     }
   }, [id, currentPost, setValue]);
 

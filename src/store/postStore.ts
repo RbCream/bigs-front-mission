@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { PostState, Post } from '../types/post';
+import { PostState, Post, PostDetail } from '../types/post';
 import * as postService from '../services/postService';
 
 export const usePostStore = create<PostState>((set) => ({
@@ -25,7 +25,7 @@ export const usePostStore = create<PostState>((set) => ({
     fetchPost: async (id: number) => {
         set({ loading: true });
         try {
-            const post = await postService.getPost(id);
+            const post: PostDetail = await postService.getPost(id);
             set({ currentPost: post, loading: false, error: null });
         } catch (error) {
             set({ error: 'Failed to fetch post', loading: false });

@@ -21,9 +21,20 @@ export interface UpdatePostDto {
     category?: string; // 카테고리 타입을 문자열로 변경
 }
 
+export interface PostDetail {
+    authorId: number | undefined;
+    id: number;
+    title: string;
+    content: string;
+    author: string;
+    createdAt: string;
+    updatedAt: string;
+    boardCategory: string; // boardCategory 필드 추가
+}
+
 export interface PostState {
     posts: Post[];
-    currentPost: Post | null;
+    currentPost: Post | PostDetail | null; // currentPost 타입 수정
     loading: boolean;
     error: string | null;
     fetchPosts: (page: number, size: number) => Promise<number>;
