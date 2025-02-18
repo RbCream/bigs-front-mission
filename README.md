@@ -69,5 +69,40 @@ build 폴더에 최적화된 빌드 결과물이 생성됩니다.
   이후 요청 시, 액세스 토큰을 사용하여 인증을 처리합니다.
 - 앱이 로드될 때마다 useEffect 훅을 사용하여 액세스 토큰을 갱신합니다
 
-### 연락처 & 문의
+## 프로젝트 구조
+```
+bigs-front-test/
+├── public/                     # 정적 파일
+│   ├── index.html              # HTML 템플릿
+│   └── ...
+├── src/                        # 소스 코드
+│   ├── components/             # React 컴포넌트
+│   │   ├── Header.tsx          # 헤더 컴포넌트
+│   │   ├── LoginForm.tsx       # 로그인 폼 컴포넌트
+│   │   ├── SignupForm.tsx      # 회원가입 폼 컴포넌트
+│   │   ├── PostList.tsx        # 글 목록 컴포넌트
+│   │   ├── PostDetail.tsx      # 글 상세 컴포넌트
+│   │   ├── PostForm.tsx        # 글 작성/수정 폼 컴포넌트
+│   │   └── ProtectedRoute.tsx  # 보호된 라우트 컴포넌트
+│   ├── store/                  # Zustand 상태 관리
+│   │   ├── authStore.ts        # 인증 상태 관리
+│   │   └── postStore.ts        # 글 상태 관리
+│   ├── services/               # API 서비스
+│   │   ├── api.ts              # Axios 인스턴스 및 인터셉터 설정
+│   │   ├── auth.ts             # 인증 API 서비스
+│   │   └── postService.ts      # 글 API 서비스
+│   ├── types/                  # 타입 정의
+│   │   ├── auth.ts             # 인증 관련 타입
+│   │   └── post.ts             # 글 관련 타입
+│   ├── utils/                  # 유틸리티 함수
+│   │   └── errorHandler.ts     # 에러 핸들러
+│   ├── App.tsx                 # 메인 앱 컴포넌트
+│   ├── routes.tsx              # 라우트 설정
+│   ├── theme.ts                # MUI 테마 설정
+│   └── index.tsx               # 엔트리 포인트
+├── .gitignore                  # Git 무시 파일 목록
+├── package.json                # 프로젝트 메타데이터 및 의존성 목록
+└── README.md                   # 프로젝트 설명서
+```
+# 연락처 & 문의
 - HJ : 20013324@naver.com
