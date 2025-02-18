@@ -6,6 +6,11 @@ import { getCategories } from '../services/postService';
 import { TextField, Button, Container, Typography, Paper } from '@mui/material';
 import { Post } from '../types/post';
 
+const StyledPaper = {
+  padding: '20px',
+  marginTop: '20px'
+};
+
 interface PostFormData {
   title: string;
   content: string;
@@ -53,7 +58,7 @@ const PostForm: React.FC = () => {
 
   return (
     <Container>
-      <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
+      <Paper elevation={3} style={StyledPaper}>
         <Typography variant="h4" component="h1" gutterBottom>
           {id ? 'Edit Post' : 'Create New Post'}
         </Typography>

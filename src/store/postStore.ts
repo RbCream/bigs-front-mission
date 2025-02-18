@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { PostState, Post, PostDetail } from '../types/post';
+import { PostState, PostDetail } from '../types/post';
 import * as postService from '../services/postService';
 
 export const usePostStore = create<PostState>((set) => ({
@@ -13,7 +13,7 @@ export const usePostStore = create<PostState>((set) => ({
         set({ loading: true });
         try {
             const { content, totalPages } = await postService.getPosts(page, size);
-            set({ posts: Array.isArray(content) ? content : [], loading: false, error: null });
+            set({ posts: Array.isArray(content) ? content.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) : [], loading: false, error: null });
             return totalPages;
         } catch (error) {
             set({ error: 'Failed to fetch posts', loading: false });

@@ -8,6 +8,12 @@ import AppRoutes from './routes';
 import { useAuthStore } from './store/authStore';
 import './App.css';
 
+const StyledContainer = {
+  minWidth: '600px',
+  maxWidth: '768px',
+  margin: '0 auto'
+};
+
 const App: React.FC = () => {
   const refreshAccessToken = useAuthStore(state => state.refreshAccessToken);
 
@@ -18,12 +24,12 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-        <Router>
-          <Header />
-      <div style={{ minWidth: '600px', maxWidth: '768px' , margin: '0 auto' }}>
+      <Router>
+        <Header />
+        <div style={StyledContainer}>
           <AppRoutes />
-      </div>
-        </Router>
+        </div>
+      </Router>
     </ThemeProvider>
   );
 };

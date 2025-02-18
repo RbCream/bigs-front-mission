@@ -5,6 +5,15 @@ import { usePostStore } from '../store/postStore';
 import { getCategories } from '../services/postService';
 import { PostDetail as PostDetailType } from '../types/post';
 
+const StyledPaper = {
+  padding: '20px',
+  marginTop: '20px'
+};
+
+const StyledButtonContainer = {
+  marginTop: '10px'
+};
+
 const PostDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -38,7 +47,7 @@ const PostDetail: React.FC = () => {
 
   return (
     <Container>
-      <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
+      <Paper elevation={3} style={StyledPaper}>
         <Typography variant="h4" component="h1" gutterBottom>
           {postDetail.title}
         </Typography>
@@ -49,7 +58,7 @@ const PostDetail: React.FC = () => {
           {postDetail.content}
         </Typography>
         <Button variant="contained" onClick={() => navigate('/')}>Back to List</Button>
-        <div style={{ marginTop: '10px' }}>
+        <div style={StyledButtonContainer}>
           <Button variant="contained" color="primary" onClick={() => navigate(`/posts/edit/${postDetail.id}`)}>
             Edit
           </Button>

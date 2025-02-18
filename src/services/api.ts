@@ -38,7 +38,7 @@ api.interceptors.response.use(
             } catch (refreshError: any) {
                 console.error('Error refreshing token:', refreshError.response ? refreshError.response.data : refreshError.message);
                 useAuthStore.getState().logout();
-                            }
+            }
         }
         return Promise.reject(error);
     }

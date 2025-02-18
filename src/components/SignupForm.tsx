@@ -5,6 +5,11 @@ import { TextField, Button, Container, Typography, Paper } from '@mui/material';
 import { useAuthStore } from '../store/authStore';
 import { SignupCredentials } from '../types/auth';
 
+const StyledPaper = {
+  padding: '20px',
+  marginTop: '20px'
+};
+
 const SignupForm: React.FC = () => {
   const navigate = useNavigate();
   const { control, handleSubmit, watch } = useForm<SignupCredentials>();
@@ -22,7 +27,7 @@ const SignupForm: React.FC = () => {
 
   return (
     <Container maxWidth="xs">
-      <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
+      <Paper elevation={3} style={StyledPaper}>
         <Typography variant="h4" component="h1" align="center" gutterBottom>
           Sign Up
         </Typography>

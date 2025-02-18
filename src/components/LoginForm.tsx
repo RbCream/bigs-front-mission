@@ -5,6 +5,11 @@ import { TextField, Button, Container, Typography, Paper } from '@mui/material';
 import { useAuthStore } from '../store/authStore';
 import { LoginCredentials } from '../types/auth';
 
+const StyledPaper = {
+  padding: '20px',
+  marginTop: '20px'
+};
+
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,7 +33,7 @@ const LoginForm: React.FC = () => {
 
   return (
     <Container maxWidth="xs">
-      <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
+      <Paper elevation={3} style={StyledPaper}>
         <Typography variant="h4" component="h1" align="center" gutterBottom>
           Login
         </Typography>

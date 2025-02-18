@@ -3,6 +3,27 @@ import { usePostStore } from '../store/postStore';
 import { useAuthStore } from '../store/authStore';
 import { Link } from 'react-router-dom';
 import { List, ListItem, ListItemText, Button, Typography, Container, Paper, Box } from '@mui/material';
+import styled from 'styled-components';
+
+const StyledCategory = styled.span`
+  font-size: 0.75rem;
+  color: inherit;
+`;
+
+const StyledTitle = styled(Link)`
+  text-decoration: none;
+  color: #222222;
+  font-size: 1.25rem;
+  &:visited {
+    color: #222222;
+  }
+`;
+
+const StyledDate = styled.span`
+  font-size: 0.875rem;
+  color: inherit;
+  margin-left: 10px;
+`;
 
 const PostList: React.FC = () => {
   const { posts, fetchPosts } = usePostStore();
@@ -55,8 +76,15 @@ const PostList: React.FC = () => {
           {posts.map(post => (
             <ListItem key={post.id} divider>
               <ListItemText 
-                primary={<Link to={`/posts/${post.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>{post.title}</Link>}
-                secondary={`Category: ${post.category} on ${new Date(post.createdAt).toLocaleDateString()}`}
+                primary={
+                  <Box display="flex" flexDirection="column">
+                    <StyledCategory>{post.category}</StyledCategory>
+                    <Box display="flex" justifyContent="space-between" alignItems="center">
+                      <StyledTitle to={`/posts/${post.id}`}>{post.title}</StyledTitle>
+                      <StyledDate>{new Date(post.createdAt).toLocaleDateString()}</StyledDate>
+                    </Box>
+                  </Box>
+                }
               />
             </ListItem>
           ))}
