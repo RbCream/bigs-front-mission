@@ -1,46 +1,64 @@
-# Getting Started with Create React App
+# Bigs Front-End Developer Test
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+이 프로젝트는 Bigs Front-End 개발자 테스트를 위해 만들어졌습니다. 이 프로젝트는 React와 TypeScript를 사용하여 사용자 회원가입, 로그인, 글 등록, 조회, 수정, 삭제 기능을 구현합니다.
 
-## Available Scripts
+## 기술 스택
 
-In the project directory, you can run:
+- React
+- TypeScript
+- Zustand (상태 관리)
+- React Hook Form (폼 관리)
+- Axios (HTTP 클라이언트)
+- Material-UI (UI 라이브러리)
 
-### `npm start`
+## 프로젝트 설정 및 실행
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### 사전 요구 사항
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Node.js (v14 이상)
+- npm 또는 yarn
 
-### `npm test`
+### 설치
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+프로젝트를 클론한 후, 필요한 패키지를 설치합니다.
 
-### `npm run build`
+```bash
+git clone https://github.com/RbCream/bigs-front-test
+cd bigs-front-test
+npm install
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 실행
+개발 모드에서 애플리케이션을 실행합니다.
+```bash
+npm start
+```
+브라우저에서 http://localhost:3000 을 열어 애플리케이션을 확인할 수 있습니다.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 빌드
+프로덕션 모드로 애플리케이션을 빌드합니다.
+```bash
+npm build
+```
+build 폴더에 최적화된 빌드 결과물이 생성됩니다.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## 구현 기능
+### 사용자 회원가입
+- 이메일, 비밀번호, 이름을 입력하여 회원가입을 할 수 있습니다.
+- 비밀번호는 최소 8자 이상이어야 하며, 하나의 문자, 하나의 숫자, 하나의 특수문자를 포함해야 합니다.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### 로그인
+- 이메일과 비밀번호를 입력하여 로그인할 수 있습니다.
+- 로그인한 사용자 정보(아이디, 이름)를 표시합니다.
+- 글 등록, 조회, 수정, 삭제
+- 로그인한 사용자는 글을 등록, 조회, 수정, 삭제할 수 있습니다.
+- 글 목록은 페이지네이션을 지원합니다.
+### API 연동
+- 이 프로젝트는 제공된 API 서버와 연동하여 데이터를 처리합니다. API 문서를 참고하여 구현되었습니다.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 반응형 디자인
+- 이 프로젝트는 반응형 디자인을 지원합니다.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 연락처 & 문의
+- 제작자 : 20013324@naver.com

@@ -1,4 +1,7 @@
-# Created by https://www.toptal.com/developers/gitignore/api/react,reactnative,visualstudiocode,intellij,node,windows,linux,macos
+# .gitignore 파일
+node_modules/
+build/
+.vscode/# Created by https://www.toptal.com/developers/gitignore/api/react,reactnative,visualstudiocode,intellij,node,windows,linux,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=react,reactnative,visualstudiocode,intellij,node,windows,linux,macos
 
 ### Intellij ###
@@ -136,7 +139,8 @@ fabric.properties
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import PostList from './components/PostList';
 import PostDetail from './components/PostDetail';
 import PostForm from './components/PostForm';
@@ -18,6 +18,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/posts/new" element={<PostForm />} />
         <Route path="/posts/edit/:id" element={<PostForm />} />
       </Route>
+      <Route path="*" element={<Navigate to="/" replace />} /> {/* 지정되지 않은 경로로 이동 시 리다이렉트 */}
     </Routes>
   );
 };
