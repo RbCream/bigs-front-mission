@@ -25,7 +25,7 @@ const PostDetail: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="md">
+    <Container>
       <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
         <Typography variant="h4" component="h1" gutterBottom>
           {currentPost.title}

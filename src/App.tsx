@@ -6,6 +6,7 @@ import theme from './theme';
 import Header from './components/Header';
 import AppRoutes from './routes';
 import { useAuthStore } from './store/authStore';
+import './App.css';
 
 const App: React.FC = () => {
   const refreshAccessToken = useAuthStore(state => state.refreshAccessToken);
@@ -17,10 +18,12 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
-        <Header />
-        <AppRoutes />
-      </Router>
+        <Router>
+          <Header />
+      <div style={{ minWidth: '600px', maxWidth: '768px' , margin: '0 auto' }}>
+          <AppRoutes />
+      </div>
+        </Router>
     </ThemeProvider>
   );
 };

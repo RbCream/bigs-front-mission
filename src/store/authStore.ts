@@ -12,9 +12,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     isAuthenticated: !!localStorage.getItem('accessToken'),
     accessToken: localStorage.getItem('accessToken'),
     refreshToken: localStorage.getItem('refreshToken'),
-    isRefreshing: false, // 추가된 플래그
+    isRefreshing: false,
 
-// 로그인 관련 스토어
     login: async (credentials: LoginCredentials) => {
         try {
             const response = await login(credentials);
@@ -30,11 +29,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             });
         } catch (error) {
             console.error('Login failed:', error);
-            throw error; // 에러를 다시 던져서 호출한 곳에서 처리할 수 있도록 합니다.
+            throw error;
         }
     },
 
-// 회원가입 관련 스토어
     signup: async (credentials: SignupCredentials) => {
         try {
             const response = await signup(credentials);
@@ -54,15 +52,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         }
     },
 
-// 로그아웃 관련 스토어
-    logout: async() => {
+    logout: async () => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('user');
         set({ user: null, isAuthenticated: false, accessToken: null, refreshToken: null, isRefreshing: false });
     },
 
-// 액세스 토큰 갱신 관련 스토어
     refreshAccessToken: async () => {
         const currentRefreshToken = get().refreshToken;
         if (currentRefreshToken && !get().isRefreshing) {
@@ -83,7 +79,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             } catch (error) {
                 const err = error as any;
                 console.error('Token refresh failed:', err.response ? err.response.data : err.message);
-// 리프레시 토큰 갱신 실패 시 로그아웃 처리
                 set({ user: null, isAuthenticated: false, accessToken: null, refreshToken: null, isRefreshing: false });
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('refreshToken');
@@ -92,5 +87,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         } else {
             console.log('No refresh token available or already refreshing');
         }
+    },
+
+    setTokens: (accessToken: string, refreshToken: string) => {
+        set({
+            accessToken,
+            refreshToken,
+        });
     },
 }));

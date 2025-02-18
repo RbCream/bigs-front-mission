@@ -7,8 +7,9 @@ import { SignupCredentials } from '../types/auth';
 
 const SignupForm: React.FC = () => {
   const navigate = useNavigate();
-  const { control, handleSubmit } = useForm<SignupCredentials>();
+  const { control, handleSubmit, watch } = useForm<SignupCredentials>();
   const signup = useAuthStore(state => state.signup);
+  const password = watch('password');
 
   const onSubmit = async (data: SignupCredentials) => {
     try {
@@ -30,27 +31,17 @@ const SignupForm: React.FC = () => {
             name="username"
             control={control}
             defaultValue=""
-            rules={{ required: 'Username is required' }}
+            rules={{
+              required: '아이디는 필수 입력 항목입니다.',
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: '유효한 이메일 형식이 아닙니다.',
+              },
+            }}
             render={({ field, fieldState: { error } }) => (
               <TextField
                 {...field}
-                label="Username"
-                fullWidth
-                margin="normal"
-                error={!!error}
-                helperText={error?.message}
-              />
-            )}
-          />
-          <Controller
-            name="email"
-            control={control}
-            defaultValue=""
-            rules={{ required: 'Email is required' }}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                label="Email"
+                label="Login ID"
                 fullWidth
                 margin="normal"
                 error={!!error}
@@ -62,7 +53,17 @@ const SignupForm: React.FC = () => {
             name="password"
             control={control}
             defaultValue=""
-            rules={{ required: 'Password is required' }}
+            rules={{
+              required: '비밀번호는 필수 입력 항목입니다.',
+              minLength: {
+                value: 8,
+                message: '비밀번호는 최소 8자 이상이어야 합니다.',
+              },
+              pattern: {
+                value: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&#.~_-])[A-Za-z\d@$!%*?&#.~_-]{8,20}$/,
+                message: '비밀번호는 최소 하나의 문자, 숫자, 특수문자를 포함해야 합니다.',
+              },
+            }}
             render={({ field, fieldState: { error } }) => (
               <TextField
                 {...field}
@@ -76,14 +77,18 @@ const SignupForm: React.FC = () => {
             )}
           />
           <Controller
-            name="name"
+            name="confirmPassword"
             control={control}
             defaultValue=""
-            rules={{ required: 'Name is required' }}
+            rules={{
+              required: '비밀번호 확인은 필수 입력 항목입니다.',
+              validate: value => value === password || '비밀번호가 일치하지 않습니다.',
+            }}
             render={({ field, fieldState: { error } }) => (
               <TextField
                 {...field}
-                label="Name"
+                type="password"
+                label="Confirm Password"
                 fullWidth
                 margin="normal"
                 error={!!error}
@@ -92,15 +97,36 @@ const SignupForm: React.FC = () => {
             )}
           />
           <Controller
-            name="confirmPassword"
+            name="email"
             control={control}
             defaultValue=""
-            rules={{ required: 'Confirm Password is required' }}
+            rules={{
+              required: '이메일은 필수 입력 항목입니다.',
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: '유효한 이메일 형식이 아닙니다.',
+              },
+            }}
             render={({ field, fieldState: { error } }) => (
               <TextField
                 {...field}
-                type="password"
-                label="Confirm Password"
+                label="Email"
+                fullWidth
+                margin="normal"
+                error={!!error}
+                helperText={error?.message}
+              />
+            )}
+          />
+          <Controller
+            name="name"
+            control={control}
+            defaultValue=""
+            rules={{ required: '이름은 필수 입력 항목입니다.' }}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                label="Name"
                 fullWidth
                 margin="normal"
                 error={!!error}

@@ -10,7 +10,7 @@ const Header: React.FC = () => {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" component={Link} to="/" style={{ flexGrow: 1, textDecoration: 'none', color: 'inherit' }}>
-          My Blog
+          Bigs Front Mission
         </Typography>
         {isAuthenticated ? (
           <>

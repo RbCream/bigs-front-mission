@@ -14,15 +14,14 @@ const LoginForm: React.FC = () => {
   const onSubmit = async (data: LoginCredentials) => {
     try {
       await login(data);
-      // 로그인 성공 후 이전 페이지로 리다이렉트 (없으면 홈으로)
+
       const from = (location.state as any)?.from?.pathname || '/';
       navigate(from, { replace: true });
     } catch (error) {
       console.error('Login failed:', error);
       if (error instanceof Error) {
-        alert('Login failed: ' + error.message); // 사용자에게 에러 메시지를 표시합니다.
-      } else {
-        alert('Login failed');
+        alert('로그인 실패: 아이디나 비밀번호가 일치하지 않습니다.' );       } else {
+        alert('로그인 실패');
       }
     }
   };
@@ -38,11 +37,11 @@ const LoginForm: React.FC = () => {
             name="username"
             control={control}
             defaultValue=""
-            rules={{ required: 'Username is required' }}
+            rules={{ required: '아이디는 필수 입력 항목입니다.' }}
             render={({ field, fieldState: { error } }) => (
               <TextField
                 {...field}
-                label="Username"
+                label="Login ID"
                 fullWidth
                 margin="normal"
                 error={!!error}
@@ -54,7 +53,7 @@ const LoginForm: React.FC = () => {
             name="password"
             control={control}
             defaultValue=""
-            rules={{ required: 'Password is required' }}
+            rules={{ required: '비밀번호는 필수 입력 항목입니다.' }}
             render={({ field, fieldState: { error } }) => (
               <TextField
                 {...field}
